@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>글 보기</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <h1 id="post-title">제목</h1>
+  <div class="date" id="post-date">날짜</div>
+  <div class="content" id="post-content">내용</div>
+  <a href="index.html">← 목록으로</a>
+  <script>
+    const postId = new URLSearchParams(location.search).get("id");
+    fetch("posts.json")
+      .then(res => res.json())
+      .then(posts => {
+        const post = posts[postId];
+        if (post) {
+          document.getElementById("post-title").textContent = post.title;
+          document.getElementById("post-date").textContent = post.date;
+          document.getElementById("post-content").innerHTML = marked.parse(post.content);
+        }
+      });
+  </script>
+</body>
+</html>

@@ -4,9 +4,19 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs}"],
+    files: ["server/**/*.{js,mjs,cjs}"], // 서버 폴더
+    languageOptions: {
+      globals: globals.node,
+    },
     plugins: { js },
     extends: ["js/recommended"],
   },
-  { files: ["**/*.{js,mjs,cjs}"], languageOptions: { globals: globals.node } },
+  {
+    files: ["public/**/*.{js,mjs,cjs}"], // 퍼블릭 폴더
+    languageOptions: {
+      globals: globals.browser,
+    },
+    plugins: { js },
+    extends: ["js/recommended"],
+  },
 ]);

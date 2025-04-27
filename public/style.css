@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e6e6fa; /* 파스텔톤 연보라 */
+}
+
+header {
+  background-color: #d8bfd8;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#container {
+  display: flex;
+}
+
+nav {
+  width: 200px;
+  background-color: #e0bbe4;
+  padding: 20px;
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+  background-color: white;
+  min-height: 500px;
+}

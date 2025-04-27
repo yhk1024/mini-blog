@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>샘플 블로그</title>
+  </head>
+  <body>
+    <main id="post-list">
+      <!-- JS로 글 목록 출력 -->
+    </main>
+    <script>
+      fetch("/api/posts")
+        .then((response) => response.json())
+        .then((posts) => {
+          const postList = document.getElementById("post-list");
+          posts.forEach((post) => {
+            const item = document.createElement("li");
+            item.textContent = post.title;
+            postList.appendChild(item);
+          });
+        });
+    </script>
+  </body>
+</html>

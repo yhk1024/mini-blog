@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>글 작성하기</title>
+    <link
+      rel="stylesheet"
+      href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="write-page">
+    <h1>글 작성하기</h1>
+
+    <form id="post-form">
+      <div class="input-table">
+        <div class="input-row">
+          <label for="title">제목</label>
+          <input type="text" id="title" placeholder="제목 입력" />
+        </div>
+        <div class="input-row">
+          <label for="category">카테고리</label>
+          <select id="category">
+            <option value="JavaScript">JavaScript</option>
+            <option value="Node.js">Node.js</option>
+            <option value="HTML">HTML</option>
+            <option value="미분류">미분류</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="editor">내용 (마크다운 지원)</label>
+      <div id="editor"></div>
+
+      <div class="button-area">
+        <button type="button" class="button primary" onclick="generatePost()">
+          저장
+        </button>
+        <button type="button" class="button secondary" onclick="history.back()">
+          취소
+        </button>
+      </div>
+    </form>
+
+    <!-- Toast UI 에디터 라이브러리 -->
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- 글 작성 기능을 위한 JS -->
+    <script>
+      const editor = new toastui.Editor({
+        el: document.querySelector("#editor"),
+        height: "400px",
+        initialEditType: "wysiwyg",
+        previewStyle: "vertical",
+      });
+
+      function generatePost() {
+        const title = document.getElementById("title").value.trim();
+        const category = document.getElementById("category").value;
+        const content = editor.getMarkdown().trim();
+        const today = new Date().toISOString().slice(0, 10);
+
+        if (!title || !content) {
+          alert("제목과 내용을 모두 입력해주세요.");
+          return;
+        }
+
+        fetch("/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, date: today, content, category }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("서버 응답 실패");
+            return res.json();
+          })
+          .then(() => {
+            alert("글이 저장되었습니다.");
+            window.location.href = "index.html";
+          })
+          .catch((err) => {
+            console.error("글 저장 오류:", err);
+            alert("글 저장 중 오류가 발생했습니다.");
+          });
+      }
+    </script>
+  </body>
+</html>

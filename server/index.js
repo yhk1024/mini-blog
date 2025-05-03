@@ -1,28 +1,71 @@
 const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
+
 const app = express();
 const PORT = 3000;
-// 임시 데이터 (DB 연결 전이라 하드코딩)
-const posts = [
-  { id: 1, title: "JS 기초", content: "JS 글입니다.", category: "JavaScript" },
-  {
-    id: 2,
-    title: "Node.js 서버",
-    content: "Node.js 글입니다.",
-    category: "Node.js",
-  },
-  { id: 3, title: "HTML 구조", content: "HTML 글입니다.", category: "HTML" },
-];
 
-// public 폴더를 정적 파일 제공
-app.use(express.static("public"));
+// NAS 상 SQLite DB 경로 (적절히 바꿔야 할 수 있음)
+const dbPath = "/volume1/sqlite/blog.db";
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error("DB 연결 실패:", err.message);
+  } else {
+    console.log("DB 연결 성공:", dbPath);
+  }
+});
 
-// 요청 body 파싱
+// 테이블이 없으면 자동 생성
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS posts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      category TEXT NOT NULL,
+      content TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+});
+
+// 미들웨어
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "../public")));
 
-// (나중에) API 만들 자리
+// API: 글 목록 가져오기
 app.get("/api/posts", (req, res) => {
-  res.json(posts);
+  db.all("SELECT * FROM posts ORDER BY created_at DESC", [], (err, rows) => {
+    if (err) {
+      console.error("글 목록 조회 오류:", err.message);
+      return res.status(500).json({ error: "DB 조회 오류" });
+    }
+    res.json(rows);
+  });
+});
+
+// API: 글 작성
+app.post("/api/posts", (req, res) => {
+  const { title, category, content } = req.body;
+
+  if (!title || !category || !content) {
+    return res
+      .status(400)
+      .json({ error: "제목, 카테고리, 내용은 필수입니다." });
+  }
+
+  db.run(
+    "INSERT INTO posts (title, category, content) VALUES (?, ?, ?)",
+    [title, category, content],
+    function (err) {
+      if (err) {
+        console.error("글 작성 오류:", err.message);
+        return res.status(500).json({ error: "DB 저장 실패" });
+      }
+      res.status(201).json({ id: this.lastID });
+    }
+  );
 });
 
 // 서버 시작

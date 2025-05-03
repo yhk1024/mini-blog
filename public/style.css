@@ -1,30 +1,134 @@
 body {
+  font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+  background-color: #f9f9fc;
+  color: #333;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #e6e6fa; /* 파스텔톤 연보라 */
+  padding: 0;
 }
-
 header {
-  background-color: #d8bfd8;
-  padding: 20px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-#container {
+  background-color: #d9c8f2;
+  padding: 1rem 2rem;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
-nav {
-  width: 200px;
-  background-color: #e0bbe4;
-  padding: 20px;
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
 }
-
-main {
-  flex: 1;
-  padding: 20px;
+#search {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 8px;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+}
+aside {
+  flex: 0 0 20%;
+  min-width: 160px;
+  max-width: 300px;
+  background-color: #f0e9fc;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+.profile {
   background-color: white;
-  min-height: 500px;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.profile img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+.profile p {
+  margin: 0.5rem 0;
+}
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.profile button,
+.write-btn {
+  background-color: #cbb7f0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  flex: 1;
+  min-width: 100px;
+}
+aside h3 {
+  margin-top: 2rem;
+  color: #7a4ecb;
+}
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+aside li {
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.post {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+}
+.post h2 {
+  margin-top: 0;
+}
+.post p {
+  color: #666;
+}
+.read-btn {
+  background-color: #cbb7f0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  text-decoration: none;
+  display: inline-block;
+}
+@media (max-width: 600px), (max-width: 350px) {
+  .container {
+    flex-direction: column;
+  }
+  aside {
+    width: 100%;
+    max-width: none;
+  }
+  main {
+    padding: 0 0.5rem;
+  }
+  .button-group {
+    flex-direction: column;
+  }
 }

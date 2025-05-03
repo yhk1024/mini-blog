@@ -14,19 +14,39 @@
       </div>
     </header>
 
-    <div id="container">
-      <nav>
-        <ul id="category-list">
-          <li data-category="JavaScript">JavaScript</li>
-          <li data-category="Node.js">Node.js</li>
-          <li data-category="HTML">HTML</li>
-        </ul>
-      </nav>
-
-      <main id="main-content">
-        <h2>메인 컨텐츠</h2>
-        <p>카테고리를 선택하세요.</p>
-      </main>
+    <div class="container">
+      <aside>
+        <div class="profile">
+          <img src="https://via.placeholder.com/80" alt="프로필 이미지" />
+          <p><strong>작성자:</strong> 홍길동</p>
+          <p><strong>소개:</strong> 개발을 좋아하는 사람입니다.</p>
+          <div class="button-group">
+            <button onclick="alert('프로필 수정 기능은 준비 중입니다.')">
+              프로필 수정
+            </button>
+            <button
+              class="write-btn"
+              onclick="alert('글 작성 기능은 준비 중입니다.')"
+            >
+              글 작성
+            </button>
+          </div>
+        </div>
+        <h3>카테고리</h3>
+        <nav>
+          <ul id="category-list">
+            <li data-category="JavaScript">JavaScript</li>
+            <li data-category="Node.js">Node.js</li>
+            <li data-category="HTML">HTML</li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="content">
+        <main id="main-content">
+          <h2>메인 컨텐츠</h2>
+          <p>카테고리를 선택하세요.</p>
+        </main>
+      </div>
     </div>
 
     <!-- JavaScript 연결: 꼭 body 제일 마지막에! -->

@@ -8,31 +8,45 @@
       rel="stylesheet"
       href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"
     />
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header>
-      <h1>Mini Blog - 새 글 작성</h1>
-      <div id="header-buttons">
-        <button onclick="history.back()">이전 화면으로 가기</button>
-      </div>
-    </header>
+  <body class="write-page">
     <h1>글 작성하기</h1>
 
-    <input type="text" id="title" placeholder="제목 입력" /><br /><br />
+    <form id="post-form">
+      <div class="input-table">
+        <div class="input-row">
+          <label for="title">제목</label>
+          <input type="text" id="title" placeholder="제목 입력" />
+        </div>
+        <div class="input-row">
+          <label for="category">카테고리</label>
+          <select id="category">
+            <option value="JavaScript">JavaScript</option>
+            <option value="Node.js">Node.js</option>
+            <option value="HTML">HTML</option>
+            <option value="미분류">미분류</option>
+          </select>
+        </div>
+      </div>
 
-    <select id="category" required>
-      <option value="">카테고리 선택</option>
-      <option value="JavaScript">JavaScript</option>
-      <option value="Node.js">Node.js</option>
-      <option value="HTML">HTML</option></select
-    ><br /><br />
+      <label for="editor">내용 (마크다운 지원)</label>
+      <div id="editor"></div>
 
-    <div id="editor"></div>
-    <br />
+      <div class="button-area">
+        <button type="button" class="button primary" onclick="generatePost()">
+          저장
+        </button>
+        <button type="button" class="button secondary" onclick="history.back()">
+          취소
+        </button>
+      </div>
+    </form>
 
-    <button onclick="submitPost()">작성 완료</button>
-
+    <!-- Toast UI 에디터 라이브러리 -->
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- 글 작성 기능을 위한 JS -->
     <script>
       const editor = new toastui.Editor({
         el: document.querySelector("#editor"),
@@ -41,36 +55,33 @@
         previewStyle: "vertical",
       });
 
-      function submitPost() {
+      function generatePost() {
         const title = document.getElementById("title").value.trim();
-        const category = document.getElementById("category").value.trim();
+        const category = document.getElementById("category").value;
         const content = editor.getMarkdown().trim();
+        const today = new Date().toISOString().slice(0, 10);
 
-        if (!title || !content || !category) {
-          alert("제목, 카테고리, 내용을 모두 입력하세요.");
+        if (!title || !content) {
+          alert("제목과 내용을 모두 입력해주세요.");
           return;
         }
 
-        const postData = { title, category, content };
-
         fetch("/api/posts", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, date: today, content, category }),
         })
-          .then((response) => {
-            if (response.ok) {
-              alert("글 작성 완료");
-              window.location.href = "/";
-            } else {
-              throw new Error("글 작성 실패");
-            }
+          .then((res) => {
+            if (!res.ok) throw new Error("서버 응답 실패");
+            return res.json();
           })
-          .catch((error) => {
-            console.error("에러 발생:", error);
-            alert("글 작성 중 문제가 발생했습니다.");
+          .then(() => {
+            alert("글이 저장되었습니다.");
+            window.location.href = "index.html";
+          })
+          .catch((err) => {
+            console.error("글 저장 오류:", err);
+            alert("글 저장 중 오류가 발생했습니다.");
           });
       }
     </script>

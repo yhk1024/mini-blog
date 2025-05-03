@@ -9,25 +9,22 @@
   <body>
     <header>
       <h1>Mini Blog</h1>
-      <div id="header-buttons">
-        <button onclick="location.href='write.html'">글 작성하기</button>
-      </div>
     </header>
 
     <div class="container">
       <aside>
         <div class="profile">
-          <img src="https://via.placeholder.com/80" alt="프로필 이미지" />
+          <!-- <img src="https://via.placeholder.com/80" alt="프로필 이미지" /> -->
           <p><strong>작성자:</strong> 홍길동</p>
           <p><strong>소개:</strong> 개발을 좋아하는 사람입니다.</p>
           <div class="button-group">
-            <button onclick="alert('프로필 수정 기능은 준비 중입니다.')">
+            <button
+              class="button primary"
+              onclick="alert('프로필 수정 기능은 준비 중입니다.')"
+            >
               프로필 수정
             </button>
-            <button
-              class="write-btn"
-              onclick="alert('글 작성 기능은 준비 중입니다.')"
-            >
+            <button class="button primary" onclick="location.href='write.html'">
               글 작성
             </button>
           </div>
